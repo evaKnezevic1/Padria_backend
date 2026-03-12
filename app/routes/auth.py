@@ -76,7 +76,7 @@ def login(credentials: LoginSchema, response: Response, db: Session = Depends(ge
             value=access_token,
             httponly=True,
             secure=True,
-            samesite='lax',
+            samesite='none',
             max_age=COOKIE_MAX_AGE,
             path='/',
         )
