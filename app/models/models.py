@@ -74,12 +74,17 @@ class AboutContent(Base):
     contact_text = Column(Text, default='Imate pitanja? Kontaktirajte nas danas kako biste saznali više o našim uslugama.')
     title_en = Column(String, nullable=True)
     intro_en = Column(Text, nullable=True)
+    home_story_title = Column(String, default='Naša priča')
+    home_story_text = Column(Text, default='Naša priča započela je s jednostavnom idejom — ponuditi nešto drugačije na tržištu nekretnina. Umjesto masovnog pristupa, odlučili smo se za boutique model, gdje je svaki klijent jedinstven, a svaka nekretnina ima svoju priču. Kao mala, posvećena agencija, gradimo odnose temeljene na povjerenju, diskreciji i vrhunskoj usluzi. Fokusirani smo na kvalitetu, ne kvantitetu — pažljivo biramo nekretnine koje predstavljamo i pružamo personaliziranu podršku kroz svaki korak procesa.')
+    home_story_title_en = Column(String, nullable=True)
+    home_story_text_en = Column(Text, nullable=True)
     mission_title_en = Column(String, nullable=True)
     mission_text_en = Column(Text, nullable=True)
     why_title_en = Column(String, nullable=True)
     why_items_en = Column(Text, nullable=True)
     contact_title_en = Column(String, nullable=True)
     contact_text_en = Column(Text, nullable=True)
+    about_image_url = Column(String, nullable=True)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 

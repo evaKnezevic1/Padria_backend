@@ -120,12 +120,17 @@ class AboutContentSchema(BaseModel):
     contact_text: str
     title_en: Optional[str] = None
     intro_en: Optional[str] = None
+    home_story_title: str
+    home_story_text: str
+    home_story_title_en: Optional[str] = None
+    home_story_text_en: Optional[str] = None
     mission_title_en: Optional[str] = None
     mission_text_en: Optional[str] = None
     why_title_en: Optional[str] = None
     why_items_en: Optional[str] = None
     contact_title_en: Optional[str] = None
     contact_text_en: Optional[str] = None
+    about_image_url: Optional[str] = None
     updated_at: Optional[datetime] = None
 
     class Config:
@@ -142,12 +147,17 @@ class AboutContentUpdateSchema(BaseModel):
     contact_text: Optional[str] = None
     title_en: Optional[str] = None
     intro_en: Optional[str] = None
+    home_story_title: Optional[str] = None
+    home_story_text: Optional[str] = None
+    home_story_title_en: Optional[str] = None
+    home_story_text_en: Optional[str] = None
     mission_title_en: Optional[str] = None
     mission_text_en: Optional[str] = None
     why_title_en: Optional[str] = None
     why_items_en: Optional[str] = None
     contact_title_en: Optional[str] = None
     contact_text_en: Optional[str] = None
+    about_image_url: Optional[str] = None
 
 
 class ContactContentSchema(BaseModel):

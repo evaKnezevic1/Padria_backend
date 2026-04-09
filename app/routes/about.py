@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Header, Cookie
+from fastapi import APIRouter, Depends, HTTPException, Header, Cookie, UploadFile, File
 from sqlalchemy.orm import Session
 from app.database.db import get_db
 from app.models.models import AboutContent, User
 from app.schemas.schemas import AboutContentSchema, AboutContentUpdateSchema
 from app.core.security import verify_token
+from app.utils.image_handler import save_upload_file, delete_upload_file_sync
 from typing import Optional
 
 router = APIRouter(prefix='/api/about', tags=['about'])
@@ -57,4 +58,44 @@ def update_about(
         setattr(content, field, value)
     db.commit()
     db.refresh(content)
+    return content
+
+
+@router.post('/image', response_model=AboutContentSchema)
+async def replace_about_image(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    admin: User = Depends(get_admin_user)
+):
+    """Replace About Us image (admin only).
+
+    The old image URL in database is replaced with a new one and then the old
+    storage object is deleted.
+    """
+    content = get_or_create_about(db)
+    old_image_url = content.about_image_url
+
+    try:
+        new_image_url = await save_upload_file(file)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f'Error uploading file: {str(e)}')
+
+    try:
+        content.about_image_url = new_image_url
+        db.commit()
+        db.refresh(content)
+    except Exception:
+        db.rollback()
+        try:
+            delete_upload_file_sync(new_image_url)
+        except Exception:
+            pass
+        raise HTTPException(status_code=500, detail='Failed to save about image')
+
+    if old_image_url and old_image_url != new_image_url:
+        try:
+            delete_upload_file_sync(old_image_url)
+        except Exception:
+            pass
+
     return content
