@@ -23,5 +23,5 @@ SUPABASE_BUCKET = os.getenv('SUPABASE_BUCKET', 'listing-images')
 CORS_ORIGINS = os.getenv('CORS_ORIGINS', 'http://localhost:3000')
 
 # Default admin credentials
-ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', 'admin@example.com')
-ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'password')
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')

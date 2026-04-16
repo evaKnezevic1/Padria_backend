@@ -111,11 +111,23 @@ def get_current_user_route(request: Request, db: Session = Depends(get_db), admi
     return user
 
 @router.post('/logout')
-def logout(response: Response, adminToken: Optional[str] = Cookie(None)):
-    # Blacklist the token if it exists
-    if adminToken:
-        blacklist_token(adminToken)
+def logout(request: Request, response: Response, adminToken: Optional[str] = Cookie(None)):
+    auth_header = request.headers.get('authorization')
+    bearer_token = None
+    if auth_header and auth_header.startswith('Bearer '):
+        bearer_token = auth_header[7:]
+
+    # Blacklist whichever token source is present.
+    token_to_blacklist = adminToken or bearer_token
+    if token_to_blacklist:
+        blacklist_token(token_to_blacklist)
     
     # Clear the cookie
-    response.delete_cookie(key=COOKIE_NAME, path='/')
+    response.delete_cookie(
+        key=COOKIE_NAME,
+        path='/',
+        secure=True,
+        samesite='none',
+        httponly=True,
+    )
     return {'message': 'Logged out successfully'}
