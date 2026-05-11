@@ -24,6 +24,10 @@ def create_default_admin():
             db.add(admin_user)
             db.commit()
             print(f"Default admin user created: {ADMIN_EMAIL}")
+        else:
+            existing_admin.hashed_password = hash_password(ADMIN_PASSWORD)
+            db.commit()
+            print(f"Default admin password synced from .env: {ADMIN_EMAIL}")
     finally:
         db.close()
 
